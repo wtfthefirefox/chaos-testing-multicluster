@@ -4,7 +4,7 @@
 x86-64, linux
 
 # What we will install?
-1. Basic deps: such as helm and kubectl
+1. Basic deps: such as helm, kubectl and k8s
 1. Grafana
 2. 2 basic apps for emulating two k8s clusters
 
