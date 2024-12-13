@@ -1,0 +1,17 @@
+ingress:
+  enabled: true
+  hosts: ["grafana.local"]
+
+adminPassword: admin
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      url: http://prometheus.local
+      type: prometheus
+      access: proxy
+      isDefault: true
+      editable: true
+    deleteDatasources: []

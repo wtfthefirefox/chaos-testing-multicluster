@@ -4,7 +4,7 @@ metadata:
   name: cluster-external
 spec:
   namespace: chaos-mesh
-  version: 2.6.1
+  version: 2.7.0
   kubeConfig:
     secretRef:
       name: chaos-mesh.kubeconfig

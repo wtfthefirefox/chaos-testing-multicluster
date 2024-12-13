@@ -1,0 +1,6 @@
+dashboard:
+  ingress:
+    enabled: true
+    hosts:
+      - name: chaos-mesh-1.local
+        tls: false
