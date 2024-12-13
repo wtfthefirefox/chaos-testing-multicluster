@@ -1,16 +1,12 @@
 # Immediately blame the network
 
-## Для чего нужен проект?
-Этот проект предназначен для проведения плановых отключений n k8s кластеров на m минут, что бы можно было оценить работоспособность сервиса / сервисов при недоступности отключенных кластеров.
-## Для кого этот продукт?
-В первую очередь этот продукт будет наиболее интересен для devops и сетевых инженеров, которые как раз чаще всего и проводят учений. Так же это будет полезно разработчикам, что бы проверить работоспособность своего сервиса при недоступности одного или нескольких кластеров.
-## Как происходит установка?
-1. Устанавливается 
-## План проведения учений
-1. В систему добавляются кластеры, который будут использоваться в системе для проведения будущих учений.
-2. Производится настройка расписаний учений
-3. Запуск созданного учения
-4. Окончание учений
-## Возможности, которых пока что нет, но очень хотелось бы получить:
-1. Отправка уведомлений в telegram о процессе проведения учений
-2. Отправка описания каждого проведенного учения в какой-либо тикет.
+# Deps
+Before run code check that you have already installed minikube, kubectl and helm or you can try to `/basic-deps-install.sh` script to install all deps(works only for linux systems).
+
+# Steps to run:
+1. Ensure that steps described in Deps header acquired
+2. Run setup-clusters.sh
+3. Add grafana.local, chaos-mesh-1.local, chaos-mesh-daemon-metrics.local and prometheus.local to `/etc/hosts`
+
+# Steps to clear everything after your exps
+1. Run `teardown-kind.sh` script
