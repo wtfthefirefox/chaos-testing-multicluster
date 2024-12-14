@@ -70,9 +70,12 @@ minikube addons enable ingress -p base
 minikube addons enable ingress -p external
 
 # add chaos mesh base cluster metrics
-kubectl apply -f K8s-yaml-files/chaos-mesh-setup/ingress.yaml
+kubectl apply -f basic-setup/chaos-mesh-setup/ingress.yaml
 
 # TODO: thefirefox15 move dasboards stuff to basic-setup/dashboards script
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add grafana https://grafana.github.io/helm-charts
+
 # install prometheus
 CHAOS_DASHBOARD_METRICS_URL=`kubectl get service/chaos-dashboard -n chaos-mesh -o jsonpath='{.spec.clusterIP}'` \
 CHAOS_MANAGER_METRICS_URL=`kubectl get service/chaos-mesh-controller-manager -n chaos-mesh -o jsonpath='{.spec.clusterIP}'` \
