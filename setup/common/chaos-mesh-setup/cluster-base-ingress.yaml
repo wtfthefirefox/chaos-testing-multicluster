@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
-    - host: chaos-mesh-daemon-metrics-2.local
+    - host: chaos-mesh-daemon-metrics-1.local
       http:
         paths:
           - path: "/(.*)"
@@ -18,7 +18,7 @@ spec:
                 name: chaos-daemon
                 port:
                   number: 31766
-    - host: chaos-mesh-2.local
+    - host: chaos-mesh-dashboards-metrics-1.local
       http:
         paths:
           - path: "/(.*)"
@@ -27,4 +27,14 @@ spec:
               service:
                 name: chaos-dashboard
                 port:
-                  number: 2333
+                  number: 2334
+    - host: chaos-mesh-controller-metrics-1.local
+      http:
+        paths:
+          - path: "/(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: chaos-mesh-controller-manager
+                port:
+                  number: 10080

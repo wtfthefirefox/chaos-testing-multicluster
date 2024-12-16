@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #Remove all kind clusters when done with the demo
 minikube delete --all
 

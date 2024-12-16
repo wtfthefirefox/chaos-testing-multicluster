@@ -1,26 +1,21 @@
-# Immediately blame the network
+# Immediately blame the network on your clusters
+
+## About provided soltion
+Solution based on chaos mesh and provide a chaos testing interface on two clusters. It can easily scale out, if you will repeat steps written below.
+
+# Common definitions:
+1. Base cluster - a cluster, which will be used as main(master) cluster.
+2. External cluster - a cluster, which will be used as replica cluster.
 
 # Deps
-Before run code check that you have already installed minikube, kubectl and helm or you can try to `basic-setup/basic-deps-install.sh` script to install all deps(works only for linux systems).
+This solution use minikube, kubectl and helm as core instruments, so to use written solution make sure that you have already installed minikube, kubectl and helm or you can try to `basic-setup/basic-deps-install.sh` script to install all deps(works only for linux systems).
 
-# Steps to run:
-1. Ensure that steps described in Deps header acquired
-2. Run setup-clusters.sh
-3. Add grafana.local, chaos-mesh-1.local, chaos-mesh-daemon-metrics.local and prometheus.local to `/etc/hosts` wtih ip from `minikube ip -p base`:
-- `192.168.*.* grafana.local`
+# Testing all installed stuff on 
+1. Add `grafana.local`, `chaos-mesh-1.local` and `prometheus.local` to localhost `/etc/hosts` like we did it before. For intance if `prometheus.local` was instlled on base cluster, so new row will be:
+    - `ip prometheus.local`, where ip is ip of base cluster
 
-# How to check if it works?
-1. Grafana will be available at grafana.local.
-2. Chaos mesh will be available at chaos-mesh-1.local.
-3. Prometheus will be available at prometheus.local
+# Install stesps
+All steps to install soltion writeen in this [instruction](setup/readme.md).
 
-# How to check if it works?
-1. Grafana will be available at grafana.local.
-2. Chaos mesh will be available at chaos-mesh-1.local.
-3. Prometheus will be available at prometheus.local
-
-# Steps to clear everything after your exps
-1. Run `teardown-kind.sh` script
-
-# Common errors
-1. If you have a errors like 'too many open files' in failing chaos-controller, try to run `sudo sysctl fs.inotify.max_user_watches=655360`.
+# What if i have / want to have more than two clusters in my application?
+You should use one of two main ways to install provided soltuion two base and external cluster. Then you should run this [instruction](setup/scaling/readme.md).
