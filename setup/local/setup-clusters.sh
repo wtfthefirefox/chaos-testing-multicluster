@@ -62,6 +62,12 @@ sleep 15
 kubectl wait pods -n chaos-mesh -l app.kubernetes.io/instance=chaos-mesh --for condition=Ready --timeout=600s
 output_information "Chaos mesh installation on External cluster completed"
 
+external_chaos_dashboards_url=$(kubectl get service/chaos-dashboard -n chaos-mesh -o jsonpath='{.spec.clusterIP}')
+external_chaos_manager_url=$(kubectl get service/chaos-mesh-controller-manager -n chaos-mesh -o jsonpath='{.spec.clusterIP}')
+
+# add chaos mesh base cluster metrics
+kubectl apply -f basic-setup/chaos-mesh-setup/cluster-external-ingress.yaml
+
 #Run chaos experiment
 kubectl config use base
 kubectl apply -f K8s-yaml-files/chaos-experiments-remote/pod-kill-experiment.yaml
@@ -70,20 +76,27 @@ minikube addons enable ingress -p base
 minikube addons enable ingress -p external
 
 # add chaos mesh base cluster metrics
-kubectl apply -f basic-setup/chaos-mesh-setup/ingress.yaml
+kubectl apply -f basic-setup/chaos-mesh-setup/cluster-base-ingress.yaml
 
 # TODO: thefirefox15 move dasboards stuff to basic-setup/dashboards script
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 
 # install prometheus
-CHAOS_DASHBOARD_METRICS_URL=`kubectl get service/chaos-dashboard -n chaos-mesh -o jsonpath='{.spec.clusterIP}'` \
-CHAOS_MANAGER_METRICS_URL=`kubectl get service/chaos-mesh-controller-manager -n chaos-mesh -o jsonpath='{.spec.clusterIP}'` \
+CHAOS_DASHBOARD_1_METRICS_URL=`kubectl get service/chaos-dashboard -n chaos-mesh -o jsonpath='{.spec.clusterIP}'` \
+CHAOS_MANAGER_1_METRICS_URL=`kubectl get service/chaos-mesh-controller-manager -n chaos-mesh -o jsonpath='{.spec.clusterIP}'` \
+CHAOS_DASHBOARD_2_METRICS_URL=`echo -n $external_chaos_dashboards_url`
+CHAOS_MANAGER_2_METRICS_URL=`echo -n $external_chaos_manager_url`
 eval 'helm install -f basic-setup/dashboards/prometheus.yaml prometheus prometheus-community/prometheus -n monitoring --create-namespace \
---set serverFiles."prometheus\.yml".scrape_configs[0].static_configs[0].targets[1]=$CHAOS_DASHBOARD_METRICS_URL:2334,serverFiles."prometheus\.yml".scrape_configs[0].static_configs[0].targets[2]=$CHAOS_MANAGER_METRICS_URL:10080'
+--set serverFiles."prometheus\.yml".scrape_configs[0].static_configs[0].targets[1]=$CHAOS_DASHBOARD_1_METRICS_URL:2334,serverFiles."prometheus\.yml".scrape_configs[0].static_configs[0].targets[2]=$CHAOS_MANAGER_1_METRICS_URL:10080 \
+--set serverFiles."prometheus\.yml".scrape_configs[1].static_configs[0].targets[1]=$CHAOS_DASHBOARD_2_METRICS_URL:2334,serverFiles."prometheus\.yml".scrape_configs[1].static_configs[0].targets[2]=$CHAOS_MANAGER_2_METRICS_URL:10080'
+
+output_information "Prometheus installation completed"
 
 # install prometheus ingress
 kubectl apply -f basic-setup/dashboards/prometheus-ingress.yaml
 
 # install grafana
 helm install grafana grafana/grafana -n grafana --create-namespace -f basic-setup/dashboards/grafana.yaml
+
+output_information "Grafana installation completed"
