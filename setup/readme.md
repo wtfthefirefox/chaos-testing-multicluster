@@ -4,3 +4,10 @@
 
 # How i can setup three or more clusters?
 Please, follow this [instruction](scaling/readme.md).
+
+# Grafana access
+1. Grafana password and login is `admin`.
+2. All dashborads available at [folder](setup/common/monitoring/dasboards). To install dashboards follow this instruction:
+   1. Open Dasboards section.
+   2. Click `New` button and then `Import`.
+   3. Copy value from chosen dasboard at [folder](setup/common/monitoring/dasboards) and paste it.
