@@ -5,7 +5,7 @@ serverFiles:
         static_configs:
           - targets: 
             - 'chaos-mesh-daemon-metrics-1.local'
-            - 'chaos-mesh-dashboards-metrics-2.local'
+            - 'chaos-mesh-dashboards-metrics-1.local'
             - 'chaos-mesh-controller-metrics-1.local'
       - job_name: 'chaos_mesh_metrics_2'
         static_configs:

@@ -24,4 +24,6 @@ sudo iptables -P FORWARD ACCEPT
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination $(echo $MINIKUBE_IP):80
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
+minikube addons enable ingress
+sleep 60
 kubectl apply -f setup/common/chaos-mesh-setup/cluster-external-ingress.yaml

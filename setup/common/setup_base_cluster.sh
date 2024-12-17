@@ -24,6 +24,7 @@ kubectl get po -n chaos-mesh
 output_information "Chaos mesh installation on base cluster completed"
 
 minikube addons enable ingress
+sleep 60 
 kubectl apply -f setup/common/chaos-mesh-setup/cluster-base-ingress.yaml
 
 kubectl apply -f K8s-yaml-files/secret-kubeconfig.yaml
@@ -31,6 +32,8 @@ kubectl apply -f K8s-yaml-files/remote-cluster.yaml
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
+
+output_information "All chaos preparations done. Setting up monitoring staff"
 
 # install prometheus
 helm install -f setup/common/monitoring/prometheus.yaml prometheus prometheus-community/prometheus -n monitoring --create-namespace
@@ -45,3 +48,8 @@ MINIKUBE_IP=$(minikube ip)
 sudo iptables -P FORWARD ACCEPT
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination $(echo $MINIKUBE_IP):80
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+output_information "Enabliing chaos on external"
+sleep 150
+# testing external cluster can make chaos 
+kubectl apply -f K8s-yaml-files/chaos-experiments-remote/pod-kill-experiment.yaml
