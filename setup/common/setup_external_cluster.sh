@@ -19,11 +19,10 @@ kubectl create namespace chaos-mesh
 sleep 15
 kubectl wait pods -n default -l app=nginx --for condition=Ready --timeout=600s
 
-MINIKUBE_IP=$(minikube ip)
 sudo iptables -P FORWARD ACCEPT
-sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination $(echo $MINIKUBE_IP):80
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination $(echo $external_cluster_ip):80
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-minikube addons enable ingress
+minikube -p external addons enable ingress
 sleep 60
 kubectl apply -f setup/common/chaos-mesh-setup/cluster-external-ingress.yaml
