@@ -1,6 +1,6 @@
-minikube start --embed-certs
+minikube start -p external --embed-certs
 
-external_cluster_ip=$(minikube ip)
+external_cluster_ip=$(minikube ip -p external)
 external_cluster_address="https:\/\/$external_cluster_ip:8443"
 proxy_address_port=8112
 real_ip=$(curl https://ipinfo.io/ip)
