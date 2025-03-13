@@ -16,7 +16,7 @@ minikube start
 
 helm repo add chaos-mesh https://charts.chaos-mesh.org
 helm search repo chaos-mesh
-helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-mesh --set dashboard.create=true --create-namespace -f /home/thefirefox15/chaos-mesh/setup/common/chaos-mesh-setup/mesh.yaml
+helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-mesh --set dashboard.create=true --create-namespace -f setup/common/chaos-mesh-setup/mesh.yaml
 
 #Verify installation
 kubectl wait pods -n chaos-mesh -l app.kubernetes.io/instance=chaos-mesh --for condition=Ready --timeout=600s 
@@ -51,5 +51,6 @@ sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
 output_information "Enabliing chaos on external"
 sleep 150
+output_information "Waiting some time before chaos mesh is start his work on external"
 # testing external cluster can make chaos 
 kubectl apply -f K8s-yaml-files/chaos-experiments-remote/pod-kill-experiment.yaml
