@@ -3,8 +3,13 @@
 # Steps to run:
 1. Ensure that steps described in Deps header acquired.
 2. Run `setup/exist/local/setup-clusters.sh` script.
-3. Add grafana.local, chaos-mesh-1.local, chaos-mesh-daemon-metrics-1.local and prometheus.local to `/etc/hosts` with ip from `minikube ip -p base`:
-    - `192.168.*.* grafana.local`
+3. Add records to `/etc/hosts` with an ip from `minikube ip -p base` and it would be like `192.168.*.*`:
+    ```
+    192.168.*.* grafana.local
+    192.168.*.* chaos-mesh-1.local
+    192.168.*.* chaos-mesh-daemon-metrics-1.local
+    192.168.*.* prometheus.local
+    ```
 
 # How to check if it works?
 1. Grafana will be available at grafana.local.
