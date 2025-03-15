@@ -49,7 +49,7 @@ sudo iptables -P FORWARD ACCEPT
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination $(echo $MINIKUBE_IP):80
 sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 
-output_information "Enabliing chaos on external"
+output_information "Enabling chaos on external"
 sleep 150
 output_information "Waiting some time before chaos mesh is start his work on external"
 # testing external cluster can make chaos 
